@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manuel Vezzali — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e0e;
+      --surface: #161616;
+      --accent: #c8ff00;
+      --accent2: #00ffe0;
+      --text: #f0f0f0;
+      --muted: #888;
+      --border: #2a2a2a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2.5rem;
+      background: rgba(14,14,14,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .logo {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-family: 'Space Mono', monospace;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav ul a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 2.5rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200,255,0,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+      display: block;
+    }
+
+    .hero p {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .hero-cta:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+    }
+
+    /* ABOUT */
+    .about {
+      padding: 6rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .about-img {
+      display: flex;
+      justify-content: center;
+    }
+
+    .avatar-wrap {
+      width: 300px; height: 300px;
+      border: 3px solid var(--accent);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .avatar-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: grayscale(30%);
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .about-text h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .skill-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .skill-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      width: 90px;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    .skill-bar-bg {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width 1s ease;
+    }
+
+    .skill-score {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      width: 36px;
+      text-align: right;
+    }
+
+    /* ACTIVITIES */
+    .activities {
+      padding: 6rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+    }
+
+    .activities > .section-label { margin-bottom: 0.5rem; }
+
+    .activities > h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 3.5rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      filter: grayscale(20%);
+      display: block;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .card-body h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .card-section-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-body p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* CERTIFICATIONS */
+    .cert-badge {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.3rem 0.75rem;
+      background: rgba(200,255,0,0.1);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-family: 'Space Mono', monospace;
+    }
+
+    footer span { color: var(--accent); }
+
+    /* RESPONSIVE */
+    @media (max-width: 700px) {
+      .about { grid-template-columns: 1fr; gap: 2.5rem; }
+      nav ul { gap: 1rem; }
+      .hero h1 { font-size: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">MV</div>
+    <ul>
+      <li><a href="#about">Chi sono</a></li>
+      <li><a href="#activities">Attività</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-tag">// Portfolio — Studente Informatica</p>
+    <h1>Manuel<span>Vezzali</span></h1>
+    <p>Studente presso il <strong style="color:var(--text)">Blaise Pascal di Reggio Emilia</strong>, indirizzo informatico. Appassionato di sviluppo software e tecnologia.</p>
+    <a href="#activities" class="hero-cta">Scopri le attività →</a>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-img">
+      <div class="avatar-wrap">
+        <img src="https://static.wixstatic.com/media/9b917e_e1dd2cc6057d4f27b984b6a3bcd1b20e~mv2.png" alt="Manuel Vezzali"/>
+      </div>
+    </div>
+    <div class="about-text">
+      <p class="section-label">// Chi sono</p>
+      <h2>About me</h2>
+      <p>Mi chiamo <strong style="color:var(--text)">Manuel Vezzali</strong>, sono uno studente del Blaise Pascal di Reggio Emilia, indirizzo informatico. Mi appassiona la programmazione e l'informatica in tutte le sue forme. <br>
+      Fuori da scuola sono anche molto attiivo con le mie passioni come la pallavolo che pratico tuttora, la moto che mi fa sentire come uno spirito libero nell'aria e il go kart dove tutte le mie preoccupazioni e problemi spariscono quando mi perdo nel suo dolce suono.
+      </p>
+
+      <p class="section-label" style="margin-top:1.5rem;">// Competenze</p>
+      <div class="skills-grid">
+        <div class="skill-row">
+          <span class="skill-name">C++</span>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:90%"></div></div>
+          <span class="skill-score">9/10</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Java</span>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:90%"></div></div>
+          <span class="skill-score">9/10</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">HTML</span>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div>
+          <span class="skill-score">8/10</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">CSS</span>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div>
+          <span class="skill-score">8/10</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">JavaScript</span>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div>
+          <span class="skill-score">7/10</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIVITIES -->
+  <section class="activities" id="activities">
+    <p class="section-label">// Terzo Anno</p>
+    <h2>Attività svolte</h2>
+
+    <div class="cards">
+
+      <!-- MONTA SMONTA -->
+      <div class="card">
+        <img src="https://static.wixstatic.com/media/9b917e_2213f06437a642a0b2b7d53de6598049~mv2.jpeg" alt="Monta Smonta"/>
+        <div class="card-body">
+          <h3>Monta Smonta</h3>
+          <div>
+            <p class="card-section-title">Descrizione</p>
+            <p>Attività pratica che ci ha permesso di approfondire le componentistiche di un pc e la nostra conoscenza si esso</p>
+          </div>
+          <div>
+            <p class="card-section-title">Risultato</p>
+            <p>Un'esperienza concreta che ha permesso di applicare le basi teoriche studiate in classe, sviluppando dimestichezza con l'hardware reale.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- NONNI SMART -->
+      <div class="card">
+        <img src="https://static.wixstatic.com/media/9b917e_1c78c98977954c97a44ce4bf2843a19e~mv2.jpg" alt="Nonni Smart"/>
+        <div class="card-body">
+          <h3>Nonni Smart</h3>
+          <div>
+            <p class="card-section-title">Descrizione</p>
+            <p>Progetto di supporto digitale rivolto a persone over 50: gli studenti hanno assunto il ruolo di insegnanti per aiutarli ad usare dispositivi elettronici.</p>
+          </div>
+          <div>
+            <p class="card-section-title">Risultato</p>
+            <p>Un'occasione unica per mettersi in relazione con chi vede la tecnologia come un ostacolo, risolvendo problemi concreti grazie alle competenze acquisite.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- UST -->
+      <div class="card">
+        <img src="https://static.wixstatic.com/media/9b917e_b38b4214b19f4733a0a2af5a4a593802~mv2.webp" alt="UST"/>
+        <div class="card-body">
+          <h3>UST</h3>
+          <div>
+            <p class="card-section-title">Descrizione</p>
+            <p>Lezione online di durata due ore, che ha presentato e dato a noi studenti le principali informazioni su che cos'è il PCTO.</p>
+          </div>
+          <div>
+            <p class="card-section-title">Risultato</p>
+            <p>La lezione è stata molto utile a capire le attività che avremmo fatto durante l'anno e a cosa sarebbero servite per sviluppare le nostre capacità.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOURTH YEAR ACTIVITIES -->
+  <section class="activities" id="activities-4">
+    <p class="section-label">// Quarto Anno</p>
+    <h2>Attività svolte</h2>
+
+    <div class="cards">
+
+      <!-- INCONTRO CONFINDUSTRIA -->
+      <div class="card">
+        <img src="https://static.wixstatic.com/media/9b917e_2213f06437a642a0b2b7d53de6598049~mv2.jpeg" alt="Incontro Confindustria"/>
+        <div class="card-body">
+          <h3>Incontro Confindustria</h3>
+          <div>
+            <p class="card-section-title">Descrizione</p>
+            <p>Incontro fatto per gli studenti che aveva l'obiettivo di dare una visione più chiara e ampia sulle possibili strade che si possono intraprendere dopo la scuola.</p>
+          </div>
+          <div>
+            <p class="card-section-title">Risultato</p>
+            <p>Si è rivelato molto più utile del previsto, dando informazioni che in questi giorni diventano sempre più difficili da trovare e dando luce a percorsi sconosciuti a molti di noi.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- MI PRESENTO -->
+      <div class="card">
+        <img src="https://static.wixstatic.com/media/9b917e_1c78c98977954c97a44ce4bf2843a19e~mv2.jpg" alt="Mi Presento"/>
+        <div class="card-body">
+          <h3>Mi Presento</h3>
+          <div>
+            <p class="card-section-title">Descrizione</p>
+            <p>Attività dove ci è stato mostrato come deve essere strutturato un curriculum vitae e quali informazioni sono importanti da mettere all'interno di esso.</p>
+          </div>
+          <div>
+            <p class="card-section-title">Risultato</p>
+            <p>Ho ottenuto una conoscenza di base di come dovrebbe essere strutturato un curriculum e quali informazioni inserire, distinguendo quelle rilevanti da quelle superflue.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- POLARITY -->
+      <div class="card">
+        <img src="https://static.wixstatic.com/media/9b917e_b38b4214b19f4733a0a2af5a4a593802~mv2.webp" alt="Polarity"/>
+        <div class="card-body">
+          <h3>Polarity</h3>
+          <div>
+            <p class="card-section-title">Descrizione</p>
+            <p>Incontro fatto con il fondatore di Polarity, servito ad approfondire i vari linguaggi informatici utilizzati nei diversi ambiti nel mondo dell'informatica.</p>
+          </div>
+          <div>
+            <p class="card-section-title">Risultato</p>
+            <p>Grazie a questo incontro ho ottenuto una conoscenza più profonda sulle possibili specializzazioni da seguire nei vari linguaggi per avere più opportunità nel mondo del lavoro.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>© 2024 <span>Manuel Vezzali</span></div>
+    <div>Blaise Pascal · Reggio Emilia</div>
+  </footer>
+
+</body>
+</html>
